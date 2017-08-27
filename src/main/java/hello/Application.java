@@ -3,7 +3,9 @@ package hello;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.net.SocketException;
+import java.util.ArrayList;
 import java.util.Enumeration;
+import java.util.List;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -16,8 +18,8 @@ import org.springframework.web.bind.annotation.RestController;
 public class Application {
 
 	@RequestMapping("/")
-	public String home() throws SocketException {
-		StringBuilder sb= new StringBuilder();
+	public List home() throws SocketException {
+		List list= new ArrayList();
 		Enumeration e = NetworkInterface.getNetworkInterfaces();
 		while(e.hasMoreElements())
 		{
@@ -26,13 +28,13 @@ public class Application {
 		    while (ee.hasMoreElements())
 		    {
 		        InetAddress i = (InetAddress) ee.nextElement();
-		        sb.append(i.getHostAddress());
-		        sb.append("\n");
+		        list.add(i.getHostAddress());
+		        
 		        
 		    }
 		}
 		
-		return sb.toString();
+		return list;
 		
 	}
 
