@@ -5,8 +5,12 @@ import java.net.NetworkInterface;
 import java.net.SocketException;
 import java.util.ArrayList;
 import java.util.Enumeration;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.bind.RelaxedPropertyResolver;
@@ -17,8 +21,11 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class Application {
 
+	
 	@RequestMapping("/")
-	public List home() throws SocketException {
+	
+	public Map home() throws SocketException {
+		Map map= new HashMap();
 		List list= new ArrayList();
 		Enumeration e = NetworkInterface.getNetworkInterfaces();
 		while(e.hasMoreElements())
@@ -33,8 +40,16 @@ public class Application {
 		        
 		    }
 		}
+		map.put("NetworkInterfaces", list);
+		Map<String, String> env = System.getenv();
+		Set<String> keySet = env.keySet();
+		for (String key : keySet) 
+		{
+			
+			map.put("env:"+key, env.get(key));
+		}
 		
-		return list;
+		return map;
 		
 	}
 
