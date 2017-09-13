@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class Application {
 
-	
+	static String[] args;
 	@RequestMapping("/")
 	
 	public Map home() throws SocketException {
@@ -48,13 +48,17 @@ public class Application {
 			
 			map.put("env:"+key, env.get(key));
 		}
-		
+		for (int i = 0; i < args.length; i++) 
+		{
+			map.put("args["+i+"]", args[i]);
+		}
 		return map;
 		
 	}
 
 
 	public static void main(String[] args) {
+		Application.args=args;
 		SpringApplication.run(Application.class, args);
 	}
 
